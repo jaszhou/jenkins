@@ -7,22 +7,9 @@
     image_name: jaszhou/mongodb
     image_tag: latest
     replicas: 1
-# Pre-Tasks to validate if Minikube is running
-  pre_tasks:
-    - name: Check Minikube's status.
-      command: /usr/local/bin/minikube status
-      register: minikube_status
-      changed_when: false
-      ignore_errors: true
+
    
-# Check existing images
-  tasks:
-    - name: Get existing image hash.
-      shell: |
-        eval $(minikube docker-env)
-        /usr/local/bin/docker images -q {{ image_name }}
-      register: image_hash
-      changed_when: false
+
 # Create Kubernetes resources to run Hello Go.
     - name: Create a Deployment for Hello Go.
       k8s:
