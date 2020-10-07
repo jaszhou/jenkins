@@ -10,7 +10,7 @@
 # Pre-Tasks to validate if Minikube is running
   pre_tasks:
     - name: Check Minikube's status.
-      command: minikube status
+      command: /usr/local/bin/minikube status
       register: minikube_status
       changed_when: false
       ignore_errors: true
@@ -20,7 +20,7 @@
     - name: Get existing image hash.
       shell: |
         eval $(minikube docker-env)
-        docker images -q {{ image_name }}
+        /usr/local/bin/docker images -q {{ image_name }}
       register: image_hash
       changed_when: false
 # Create Kubernetes resources to run Hello Go.
@@ -60,7 +60,7 @@
             name: hello-go
             namespace: default
           spec:
-            type: LoadBalancer
+            type: NodePort
             ports:
             - port: 8180
               targetPort: 8180
