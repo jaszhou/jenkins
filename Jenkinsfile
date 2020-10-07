@@ -4,6 +4,7 @@ pipeline {
        registry = "jaszhou/mongodb"
        GOCACHE = "/tmp"
        BUILD_NUMBER = "latest"
+       PATH = "/usr/local/bin/ansible:/usr/local/bin/ansible-playbook:$PATH"
    }
    stages {
        stage ('Deploy') {
