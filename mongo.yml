@@ -8,7 +8,8 @@
     image_tag: latest
     replicas: 1
 
-# Create Kubernetes resources to run Hello Go.
+  tasks:
+      # Create Kubernetes resources to run Hello Go.
     - name: Create a Deployment for MongoDB.
       k8s:
         namespace: dev
