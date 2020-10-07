@@ -9,6 +9,25 @@
     replicas: 1
 
   tasks:
+
+    - name: Create a PVC for MongoDB.
+      k8s:
+        namespace: dev
+        state: present
+        definition:
+          kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            name: mongodb-standalone
+          spec:
+            storageClassName: standard
+            accessModes:
+              - ReadWriteOnce
+            volumeMode: Filesystem
+            resources:
+              requests:
+                storage: 1Gi
+
       # Create Kubernetes resources to run Hello Go.
     - name: Create a Deployment for MongoDB.
       k8s:
@@ -36,10 +55,10 @@
                   image: mongo
                   volumeMounts:
                   - name: mongodb-data
-                    mountPath: /data/db
+                    mountPath: /data/db2
 
               persistentVolumeClaim:
-                    claimName: mongodb-data
+                    claimName: mongodb-standalone
 
             volumeClaimTemplates:
             - metadata:
