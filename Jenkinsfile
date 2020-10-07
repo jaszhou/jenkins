@@ -1,26 +1,11 @@
 pipeline {
    agent any
    environment {
-       registry = "magalixcorp/k8scicd"
+       registry = "jaszhou/mongodb"
        GOCACHE = "/tmp"
+       BUILD_NUMBER = "latest"
    }
    stages {
-       
-       
-       stage('Publish') {
-           environment {
-               registryCredential = 'dockerhub'
-           }
-           steps{
-               script {
-                   def appimage = docker.build registry + ":$BUILD_NUMBER"
-                   docker.withRegistry( '', registryCredential ) {
-                       appimage.push()
-                       appimage.push('latest')
-                   }
-               }
-           }
-       }
        stage ('Deploy') {
            steps {
                script{
