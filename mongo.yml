@@ -1,0 +1,50 @@
+# Setting host
+- hosts: localhost
+  gather_facts: false
+#Variables
+  vars:
+    ansible_python_interpreter: '{{ ansible_playbook_python }}'
+    image_name: jaszhou/mongodb
+    image_tag: latest
+    replicas: 1
+
+# Create Kubernetes resources to run Hello Go.
+    - name: Create a Deployment for MongoDB.
+      k8s:
+        namespace: dev
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: mongodb
+          spec:
+            serviceName: database
+            replicas: 1
+            selector:
+              matchLabels:
+                app: database
+            template:
+              metadata:
+                labels:
+                  app: database
+                  selector: mongodb
+              spec:
+                containers:
+                - name: mongodb
+                  image: mongo
+                  volumeMounts:
+                  - name: mongodb-data
+                    mountPath: /data/db
+
+              persistentVolumeClaim:
+                    claimName: mongodb-standalone
+
+            volumeClaimTemplates:
+            - metadata:
+                name: mongodb-data
+              spec:
+                accessModes: [ "ReadWriteOnce" ]
+                resources:
+                  requests:
+                    storage: 1Gi

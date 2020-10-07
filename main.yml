@@ -70,3 +70,15 @@
             selector:
               app: hello-go
 
+
+#Post Tasks
+ - post_tasks:
+    #Example export using minikube services
+    - name: Expose Hello Go on the host via Minikube.
+      command: minikube service hello-go --url=true
+      changed_when: false
+      register: minikube_service
+    - debug:
+        msg: "Hello Go URL: {{ minikube_service['stdout_lines'][0] }}"
+
+
