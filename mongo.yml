@@ -39,7 +39,7 @@
                     mountPath: /data/db
 
               persistentVolumeClaim:
-                    claimName: mongodb-standalone
+                    claimName: mongodb-data
 
             volumeClaimTemplates:
             - metadata:
