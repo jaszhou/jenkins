@@ -7,25 +7,9 @@
     image_name: jaszhou/mongodb
     image_tag: latest
     replicas: 1
-# Pre-Tasks to validate if Minikube is running
-  pre_tasks:
-    - name: Check Minikube's status.
-      command: minikube status
-      register: minikube_status
-      changed_when: false
-      ignore_errors: true
-    # Otherwise will start minikube
-    - name: Start Minikube if it's not running.
-      command: minikube start
-      when: "not minikube_status.stdout or 'Running' not in minikube_status.stdout"
-# Check existing images
-  tasks:
-    - name: Get existing image hash.
-      shell: |
-        eval $(minikube docker-env)
-        docker images -q {{ image_name }}
-      register: image_hash
-      changed_when: false
+
+   
+
 # Create Kubernetes resources to run Hello Go.
     - name: Create a Deployment for Hello Go.
       k8s:
@@ -63,7 +47,7 @@
             name: hello-go
             namespace: default
           spec:
-            type: LoadBalancer
+            type: NodePort
             ports:
             - port: 8180
               targetPort: 8180
